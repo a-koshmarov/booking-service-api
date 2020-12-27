@@ -16,7 +16,7 @@ schema_view = get_schema_view(
 urlpatterns = [
     path('booking/', BookingView.as_view()),
     path('booking/room/<int:room>/', RoomView.as_view()),
-    path('/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('login/', LoginView.as_view()),
     path('register/', RegisterView.as_view()),
     path('booking/<int:pk>/', MakeBookingView.as_view())
