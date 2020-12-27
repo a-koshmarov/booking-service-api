@@ -4,6 +4,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.authentication import BasicAuthentication
+from rest_framework.authtoken.models import Token
 
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
@@ -67,7 +69,7 @@ class MakeBookingView(APIView):
             return Booking.objects.get(pk=pk)
         except Booking.DoesNotExist:
             return Response ({"error": "Booking does not exist"}, status=status.HTTP_404_NOT_FOUND)
-
+    authentication_classes = [BasicAuthentication]
     permission_classes = [IsAuthenticated]
     def put(self, request, pk):
         booking = self.get_object(pk)
