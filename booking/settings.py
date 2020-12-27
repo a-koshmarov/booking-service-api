@@ -25,7 +25,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'r!m5ifsv-pnna=-$jo8v^2x^u+=q#46(q2*@6ddu$^r7t%7g^_'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', 'booking-service-api.herokuapp.com']
 
@@ -92,39 +92,39 @@ WSGI_APPLICATION = 'booking.wsgi.application'
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES = { 
-    # 'default': {
-
-    #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
-
-    #     'NAME': 'xdvoctex',
-
-    #     'USER': 'xdvoctex',
-
-    #     'PASSWORD': 'XNkm0Aa3N06OnQPsFi8LXM3qv7FeZL9Q',
-
-    #     'HOST': 'hattie.db.elephantsql.com',
-
-    #     'PORT': '5432',
-
-    # }
-
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+
+        'NAME': 'xdvoctex',
+
+        'USER': 'xdvoctex',
+
+        'PASSWORD': 'XNkm0Aa3N06OnQPsFi8LXM3qv7FeZL9Q',
+
+        'HOST': 'hattie.db.elephantsql.com',
+
+        'PORT': '5432',
+
     }
+
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    # }
 }
 
 
-# prod_db  =  dj_database_url.config(conn_max_age=500)
-# DATABASES['default'].update(prod_db)
+prod_db  =  dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(prod_db)
 
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
 
-AUTHENTICATION_BACKENDS = [
+AUTHENTICATION_BACKENDS = (
         'django.contrib.auth.backends.ModelBackend',
-]
+)
 
 AUTH_PASSWORD_VALIDATORS = [
     {

@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import BookingView, RoomView, MakeBookingView, LoginView, RegisterView
+from .views import BookingView, RoomView, MakeBookingView, LoginView, RegisterView, CreateUserView
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
@@ -18,6 +18,6 @@ urlpatterns = [
     path('booking/room/<int:room>/', RoomView.as_view()),
     path('', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('login/', LoginView.as_view()),
-    path('register/', RegisterView.as_view()),
+    path('register/', CreateUserView.as_view()),
     path('booking/<int:pk>/', MakeBookingView.as_view())
 ]

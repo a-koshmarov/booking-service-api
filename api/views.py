@@ -3,14 +3,17 @@ from django.contrib.auth import authenticate
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
+from rest_framework.generics import CreateAPIView
+from rest_framework import permissions
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from rest_framework.authentication import BasicAuthentication
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.models import Token
+from django.contrib.auth import get_user_model
 
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 
-from .models import Booking, User
+from .models import Booking
 from .serializers import BookingSerializer, UserSerializer
 
 class BookingView(APIView):
@@ -69,7 +72,8 @@ class MakeBookingView(APIView):
             return Booking.objects.get(pk=pk)
         except Booking.DoesNotExist:
             return Response ({"error": "Booking does not exist"}, status=status.HTTP_404_NOT_FOUND)
-    authentication_classes = [BasicAuthentication]
+
+    authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
     def put(self, request, pk):
         booking = self.get_object(pk)
@@ -84,22 +88,19 @@ class MakeBookingView(APIView):
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class RegisterView(APIView):
+class CreateUserView(CreateAPIView):
 
-    def post(self, request):
-        serializer = UserSerializer(data=request.data)
-
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    model = get_user_model()
+    permission_classes = [
+        permissions.AllowAny
+    ]
+    serializer_class = UserSerializer
 
 class LoginView(APIView):
 
     def post(self, request):
         username = request.data.get("username")
         password = request.data.get("password")
-        user = User.objects.get(username=username)
 
         if username is None or password is None:
             return Response({'error': 'Please provide both username and password'}, status=status.HTTP_400_BAD_REQUEST)
@@ -109,5 +110,5 @@ class LoginView(APIView):
             return Response({'error': 'Invalid Credentials'},
                         status=status.HTTP_404_NOT_FOUND)
 
-        token, _ = Token.objects.get_or_crerate(user=user)
+        token = Token.objects.get(user=user)
         return Response({'token': token.key}, status=status.HTTP_200_OK)
