@@ -26,7 +26,7 @@ SECRET_KEY = 'r!m5ifsv-pnna=-$jo8v^2x^u+=q#46(q2*@6ddu$^r7t%7g^_'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['booking-service-api.herokuapp.com']
+ALLOWED_HOSTS = ['localhost', 'booking-service-api.herokuapp.com']
 
 AUTH_USER_MODEL = 'api.User'
 
@@ -87,9 +87,21 @@ WSGI_APPLICATION = 'booking.wsgi.application'
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES = {
+    
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+
+        'NAME': 'xdvoctex',
+
+        'USER': 'xdvoctex',
+
+        'PASSWORD': 'XNkm0Aa3N06OnQPsFi8LXM3qv7FeZL9Q',
+
+        'HOST': 'hattie.db.elephantsql.com',
+
+        'PORT': '5432',
+
     }
 }
 
