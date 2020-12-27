@@ -8,7 +8,7 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 
-from .models import Booking
+from .models import Booking, User
 from .serializers import BookingSerializer, UserSerializer
 
 class BookingView(APIView):
