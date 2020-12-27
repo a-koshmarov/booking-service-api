@@ -1,1 +1,1 @@
-web: gunicorn booking.wsgi --log-file 
+web: waitress-serve --port=$PORT website:boooking
