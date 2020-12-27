@@ -13,10 +13,10 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 from pathlib import Path
 import os
 import dj_database_url 
+import django_heroku
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
-
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
@@ -91,28 +91,32 @@ WSGI_APPLICATION = 'booking.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-DATABASES = {
-    
+DATABASES = { 
+    # 'default': {
+
+    #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
+
+    #     'NAME': 'xdvoctex',
+
+    #     'USER': 'xdvoctex',
+
+    #     'PASSWORD': 'XNkm0Aa3N06OnQPsFi8LXM3qv7FeZL9Q',
+
+    #     'HOST': 'hattie.db.elephantsql.com',
+
+    #     'PORT': '5432',
+
+    # }
+
     'default': {
-
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-
-        'NAME': 'xdvoctex',
-
-        'USER': 'xdvoctex',
-
-        'PASSWORD': 'XNkm0Aa3N06OnQPsFi8LXM3qv7FeZL9Q',
-
-        'HOST': 'hattie.db.elephantsql.com',
-
-        'PORT': '5432',
-
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 
 
-prod_db  =  dj_database_url.config(conn_max_age=500)
-DATABASES['default'].update(prod_db)
+# prod_db  =  dj_database_url.config(conn_max_age=500)
+# DATABASES['default'].update(prod_db)
 
 
 # Password validation
@@ -156,10 +160,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 # PROJECT_ROOT   =   os.path.join(os.path.abspath(__file__))
-PROJECT_ROOT = os.path.dirname(os.path.dirname(__file__))
-STATIC_ROOT  =   os.path.join(PROJECT_ROOT, 'staticfiles')
+# PROJECT_ROOT = os.path.dirname(os.path.dirname(__file__))
+# STATIC_ROOT  =   os.path.join(PROJECT_ROOT, 'staticfiles')
 
-STATICFILES_DIRS = (
-    os.path.join(PROJECT_ROOT, 'static'),
-)
+# STATICFILES_DIRS = (
+#     os.path.join(PROJECT_ROOT, 'static'),
+# )
 STATIC_URL = '/static/'
+
+django_heroku.settings(locals())
