@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'r!m5ifsv-pnna=-$jo8v^2x^u+=q#46(q2*@6ddu$^r7t%7g^_'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['localhost', 'booking-service-api.herokuapp.com']
 
