@@ -16,7 +16,7 @@ Django REST API for room booking
 - **GET /api/booking/room/{room id}/** - list free bookings in {room id}
   - *?all=true* - list all bookings
 - **PUT /api/booking/{booking id}/** - book the room (Authentication: **token**)
-- **DELETE /api/booking/{booking id}/** - delete booking (Admin only)
+- **DELETE /api/booking/{booking id}/delete/** - delete booking (Admin only)
 - **POST /api/register/** - register new user
   - *username*
   - *password*
