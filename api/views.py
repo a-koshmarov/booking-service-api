@@ -3,10 +3,10 @@ from django.contrib.auth import authenticate
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
-from rest_framework.generics import CreateAPIView
+from rest_framework.generics import ListCreateAPIView, UpdateAPIView, CreateAPIView, DestroyAPIView
 from rest_framework import permissions
-from rest_framework.permissions import IsAuthenticated, AllowAny
-from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
+from rest_framework.authentication import TokenAuthentication, SessionAuthentication
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import get_user_model
 
@@ -14,9 +14,18 @@ from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 
 from .models import Booking
+from .permissions import IsAdminOrReadOnly
 from .serializers import BookingSerializer, UserSerializer
 
-class BookingView(APIView):
+# class CreateBookingView()
+
+class BookingView(ListCreateAPIView):
+
+    permission_classes = [IsAdminOrReadOnly]
+    authentication_classes = [TokenAuthentication, SessionAuthentication]
+
+    serializer_class = BookingSerializer
+    queryset = Booking.objects.all()
 
     display_all_param = openapi.Parameter('all', openapi.IN_QUERY, description="Display all bookings", type=openapi.TYPE_BOOLEAN)
     datetime_from_param = openapi.Parameter('datetime_from', openapi.IN_QUERY, description="Display bookings starting from datetime (accepts iso datetime)", type=openapi.TYPE_STRING)
@@ -65,7 +74,12 @@ class RoomView(APIView):
         serializer = BookingSerializer(bookings, many=True)
         return Response(serializer.data)
 
-class MakeBookingView(APIView):
+class MakeBookingView(UpdateAPIView):
+
+    authentication_classes = [TokenAuthentication, SessionAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    serializer_class = BookingSerializer
 
     def get_object(self, pk):
         try:
@@ -73,8 +87,6 @@ class MakeBookingView(APIView):
         except Booking.DoesNotExist:
             return Response ({"error": "Booking does not exist"}, status=status.HTTP_404_NOT_FOUND)
 
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
     def put(self, request, pk):
         booking = self.get_object(pk)
         data = {"user": request.user.id, "booked": True}
@@ -87,6 +99,13 @@ class MakeBookingView(APIView):
                 booking.end_time.strftime("%b %d %Y %H:%M"))}
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class DeleteBookingView(DestroyAPIView):
+    permission_classes = [IsAdminuser]
+    authentication_classes = [TokenAuthentication, SessionAuthentication]
+
+    queryset = Booking.objects.all()
+    serializer_class = BookingSerializer
 
 class CreateUserView(CreateAPIView):
 
