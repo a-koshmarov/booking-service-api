@@ -101,7 +101,7 @@ class MakeBookingView(UpdateAPIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class DeleteBookingView(DestroyAPIView):
-    permission_classes = [IsAdminuser]
+    permission_classes = [IsAdminUser]
     authentication_classes = [TokenAuthentication, SessionAuthentication]
 
     queryset = Booking.objects.all()
